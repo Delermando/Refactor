@@ -1,7 +1,7 @@
 import sublime, sublime_plugin, pprint
 
-class DeadCodeCommand(sublime_plugin.TextCommand, sublime.View):
+class DevHelper(sublime_plugin.TextCommand, sublime.View):
 	def run(self, edit):
 		#self.view.insert(edit, 0, "Alo")
-		self.view.set_name("Diogo Alves")
+		self.view.set_name("Dev Helper! Hello Word")
 		print(str(self.view.name()))

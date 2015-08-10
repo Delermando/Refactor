@@ -1,21 +1,38 @@
 import sublime, sublime_plugin, pprint
+import re
 
-class DevHelper(sublime_plugin.TextCommand, sublime.View):
+class DevHelper(sublime_plugin.TextCommand, sublime.View, sublime.Region):
+    functionPattern = 'def'
+
     def run(self, edit):
-        #self.view.set_name("Dev Helper! Hello Word")
-        #self.view.insert(edit, 0, "Alo")
-        #print(str(self.view.name()))
-        braces = False
-        sels = self.view.sel()
-        for sel in sels:
-            if self.view.substr(sel).find('{') != -1:
-                braces = True
+        print(self.getFunctionNames())
 
-        if not braces:
-            new_sels = []
-            for sel in sels:
-                new_sels.append( self.view.find('\}', sel.end()))
-            sels.clear()
-            for sel in sels:
-                sels.add(sel)
-            self.view.run_command("expand_selection", {"to":"brackets"})
+    def getRegionLines(self):
+        return list(self.view.lines(sublime.Region(0,self.view.size())))
+
+    def getLineText(self ):
+        textList = []
+        lines = self.getRegionLines()
+        for line in lines:
+            textList.append(self.view.substr(line))
+        return textList
+
+    def getFunctionNames(self):
+        functionName = []
+        lines = self.getLineText()
+        for line in lines:
+            match = re.search(r'def[\s\n]+(\S+)[\s\n]*\(', line)
+            if match:
+                functionName.append( self.sanitizeString(match.group()))
+
+        return functionName
+
+    def sanitizeString(self, string):
+        string = string.replace(self.functionPattern , '')
+        string = string.replace(' ' , '')
+        string = string.replace('(' , '')
+        return string
+
+
+
+

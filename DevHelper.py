@@ -1,7 +1,7 @@
 import sublime, sublime_plugin, pprint
 import re
 
-class DevHelper(sublime_plugin.TextCommand, sublime.View, sublime.Region):
+class DevHelper(sublime_plugin.TextCommand):
     functionPattern = 'def'
 
     def run(self, edit):

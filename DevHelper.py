@@ -2,15 +2,16 @@ import sublime, sublime_plugin, pprint
 import re
 
 class DevHelper(sublime_plugin.TextCommand):
-    functionPattern = 'def'
+    functionPattern = 'function'
+    visibilityPattern = 'private'
 
     def run(self, edit):
-        print(self.getFunctionNames())
+        print(self.getPrivateObjects())
 
     def getRegionLines(self):
         return list(self.view.lines(sublime.Region(0,self.view.size())))
 
-    def getLineText(self ):
+    def getLineText(self):
         textList = []
         lines = self.getRegionLines()
         for line in lines:
@@ -21,18 +22,48 @@ class DevHelper(sublime_plugin.TextCommand):
         functionName = []
         lines = self.getLineText()
         for line in lines:
-            match = re.search(r'def[\s\n]+(\S+)[\s\n]*\(', line)
+            regex = self.visibilityPattern + '[\s\n]+' +self.functionPattern+'[\s\n]+(\S+)[\s\n]*\('
+            match = re.search( regex, line )
             if match:
-                functionName.append( self.sanitizeString(match.group()))
+                functionName.append( match.group() )
+
+        return functionName    
+
+    def getVariablesNames(self):
+        functionName = []
+        lines = self.getLineText()
+        for line in lines:
+            regex = self.visibilityPattern + '[\s\n]+\$+(\S+)';
+            match = re.search( regex, line )
+            if match:
+                functionName.append(match.group())
 
         return functionName
 
-    def sanitizeString(self, string):
-        string = string.replace(self.functionPattern , '')
-        string = string.replace(' ' , '')
-        string = string.replace('(' , '')
+
+    def sanitize(self, string):
+        remove = ['(', ' ', ';', '$', self.visibilityPattern, self.functionPattern]
+        for item in remove:
+            string = string.replace(item, '')
+
         return string
 
+    def getPrivateObjects(self):
+        result = []
+        objects = self.getVariablesNames() + self.getFunctionNames()
+        for obj in objects:
+            result.append( self.sanitize(obj) )
 
+        return result
 
+    def getOcorrences( self ):
+        return self.view.substr(sublime.Region(0,1000))
+        ocorrences = []
+        objects = self.getPrivateObjects()
+        text = self.getLineText()
+        for obj in objects: 
+          return re.findall( obj, text )
+          if match:
+              ocorrences.append( match.group() )
 
+        return ocorrences    

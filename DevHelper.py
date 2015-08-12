@@ -4,9 +4,10 @@ import re
 class DevHelper(sublime_plugin.TextCommand):
     functionPattern = 'function'
     visibilityPattern = 'private'
+    pointerPattern = '->'
 
     def run(self, edit):
-        print(self.getPrivateObjects())
+        print(self.getOcorrences())
 
     def getRegionLines(self):
         return list(self.view.lines(sublime.Region(0,self.view.size())))
@@ -57,13 +58,14 @@ class DevHelper(sublime_plugin.TextCommand):
         return result
 
     def getOcorrences( self ):
-        return self.view.substr(sublime.Region(0,1000))
-        ocorrences = []
+        frequency = []
+        text =  self.view.substr(sublime.Region(0,100000))
+        
         objects = self.getPrivateObjects()
-        text = self.getLineText()
         for obj in objects: 
-          return re.findall( obj, text )
-          if match:
-              ocorrences.append( match.group() )
+            match =  re.findall( self.pointerPattern+obj, text)
+            if len(match) == 0:
+                frequency.append( obj)
 
-        return ocorrences    
+        return frequency    
+

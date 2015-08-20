@@ -7,7 +7,11 @@ class DevHelper(sublime_plugin.TextCommand):
     pointerPattern = '->'
 
     def run(self, edit):
-        print(self.getOcorrences())
+        privateObjects = self.getOcorrences()
+        print('de')
+        for key, value in privateObjects.items():
+            self.view.add_regions("mark", [value], "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
+
 
     def getRegionLines(self):
         return list(self.view.lines(sublime.Region(0,self.view.size())))
@@ -20,24 +24,28 @@ class DevHelper(sublime_plugin.TextCommand):
         return textList
 
     def getFunctionNames(self):
-        functionName = []
-        lines = self.getLineText()
-        for line in lines:
+        functionName = {}
+        coordinates =  self.view.lines(sublime.Region(0,self.view.size()))
+
+        for coordinate in coordinates:
+            lineContent =  self.view.substr(coordinate)
             regex = self.visibilityPattern + '[\s\n]+' +self.functionPattern+'[\s\n]+(\S+)[\s\n]*\('
-            match = re.search( regex, line )
+            match = re.search( regex, lineContent )
             if match:
-                functionName.append( match.group() )
+                functionName[self.sanitize(match.group())] = coordinate
 
         return functionName    
 
     def getVariablesNames(self):
-        functionName = []
-        lines = self.getLineText()
-        for line in lines:
+        functionName = {}
+        coordinates =  self.view.lines(sublime.Region(0,self.view.size()))
+
+        for coordinate in coordinates:
+            lineContent =  self.view.substr(coordinate)
             regex = self.visibilityPattern + '[\s\n]+\$+(\S+)';
-            match = re.search( regex, line )
+            match = re.search( regex, lineContent )
             if match:
-                functionName.append(match.group())
+                functionName[self.sanitize(match.group())] = coordinate
 
         return functionName
 
@@ -50,22 +58,19 @@ class DevHelper(sublime_plugin.TextCommand):
         return string
 
     def getPrivateObjects(self):
-        result = []
-        objects = self.getVariablesNames() + self.getFunctionNames()
-        for obj in objects:
-            result.append( self.sanitize(obj) )
-
-        return result
+        variables = self.getVariablesNames()
+        functions = self.getFunctionNames()
+        return  dict(list(variables.items()) + list(functions.items()))
 
     def getOcorrences( self ):
-        frequency = []
+        frequency = {}
         text =  self.view.substr(sublime.Region(0,100000))
         
         objects = self.getPrivateObjects()
-        for obj in objects: 
-            match =  re.findall( self.pointerPattern+obj, text)
+        for key, value in objects.items():
+            match =  re.findall( self.pointerPattern+key, text)
             if len(match) == 0:
-                frequency.append( obj)
+                frequency[key] = value
 
         return frequency    
 

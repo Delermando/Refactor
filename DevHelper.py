@@ -7,28 +7,31 @@ class DevHelper(sublime_plugin.TextCommand):
     pointerPattern = '->'
 
     def run(self, edit):
-        privateObjects = self.getOcorrences()
-        print('de')
-        for key, value in privateObjects.items():
-            self.view.add_regions("mark", [value], "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
+        privateObjects = self.getPrivateObjectsNotUsed()
+        self.draw(privateObjects.items())
 
+    def draw(self, objects):
+        print('-----------------not used--------------------------')
+        for key, value in objects:    
+            print(key)
+            self.markLine(value)            
+        print('---------------------------------------------------')
 
-    def getRegionLines(self):
+    def getLinesCoordinates(self):
         return list(self.view.lines(sublime.Region(0,self.view.size())))
+    
+    def markLine(self,region):
+        self.view.add_regions("mark", [region], "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
 
-    def getLineText(self):
-        textList = []
-        lines = self.getRegionLines()
-        for line in lines:
-            textList.append(self.view.substr(line))
-        return textList
+    def getContentByRegion(self, coordinates):
+        return self.view.substr(coordinates)
 
     def getFunctionNames(self):
         functionName = {}
-        coordinates =  self.view.lines(sublime.Region(0,self.view.size()))
+        coordinates =  self.getLinesCoordinates()
 
         for coordinate in coordinates:
-            lineContent =  self.view.substr(coordinate)
+            lineContent =  self.getContentByRegion(coordinate)
             regex = self.visibilityPattern + '[\s\n]+' +self.functionPattern+'[\s\n]+(\S+)[\s\n]*\('
             match = re.search( regex, lineContent )
             if match:
@@ -62,7 +65,7 @@ class DevHelper(sublime_plugin.TextCommand):
         functions = self.getFunctionNames()
         return  dict(list(variables.items()) + list(functions.items()))
 
-    def getOcorrences( self ):
+    def getPrivateObjectsNotUsed( self ):
         frequency = {}
         text =  self.view.substr(sublime.Region(0,100000))
         

@@ -14,7 +14,7 @@ class DevHelper(sublime_plugin.TextCommand):
         )
         self.draw(privateObjects.items())
 
-    def draw(self, objects):        
+    def draw(self, objects):
         print('-----------------Object Not Used--------------------------')
         for key, value in objects:    
             print(self.pointer + key)
@@ -60,7 +60,7 @@ class DevHelper(sublime_plugin.TextCommand):
     def getFunctionNames(self):
         functions = self.findFunctionsOcorrences(self.getLinesCoordinates(), self.functionRegex)    
         className = self.getClassName(self.getLinesCoordinates())
-        if className in functions:
+        if len(functions) > 0 and className in functions:
             del functions[className]
 
         return functions

@@ -5,6 +5,8 @@ class DevHelper(sublime_plugin.TextCommand):
     functionPattern = 'function'
     visibilityPattern = 'private'
     pointerPattern = '->'
+    functionRegex = visibilityPattern + '[\s\n]+' +functionPattern+'[\s\n]+(\S+)[\s\n]*\('
+    variablesRegex = visibilityPattern + '[\s\n]+\$+(\S+)'
 
     def run(self, edit):
         privateObjects = self.getPrivateObjectsNotUsed()
@@ -23,21 +25,24 @@ class DevHelper(sublime_plugin.TextCommand):
     def markLine(self,region):
         self.view.add_regions("mark", [region], "mark", "dot", sublime.HIDDEN | sublime.PERSISTENT)
 
-    def getContentByRegion(self, coordinates):
-        return self.view.substr(coordinates)
+    def getContentByRegion(self, coordinate):
+        return self.view.substr(coordinate)
+
+    def match(self, regex, content):
+        return re.search( regex, content )
+
+
+    def findObjectOcorrences(self, coordinates, regex):
+        result = {}
+        for coordinate in coordinates:
+            lineContent = self.getContentByRegion(coordinate)
+            match = self.match(regex, lineContent)
+            if match:
+                result[self.sanitize(match.group())] = coordinate
+        return result
 
     def getFunctionNames(self):
-        functionName = {}
-        coordinates =  self.getLinesCoordinates()
-
-        for coordinate in coordinates:
-            lineContent =  self.getContentByRegion(coordinate)
-            regex = self.visibilityPattern + '[\s\n]+' +self.functionPattern+'[\s\n]+(\S+)[\s\n]*\('
-            match = re.search( regex, lineContent )
-            if match:
-                functionName[self.sanitize(match.group())] = coordinate
-
-        return functionName    
+        return self.findObjectOcorrences(self.getLinesCoordinates(), self.functionRegex)    
 
     def getVariablesNames(self):
         functionName = {}
@@ -45,8 +50,7 @@ class DevHelper(sublime_plugin.TextCommand):
 
         for coordinate in coordinates:
             lineContent =  self.view.substr(coordinate)
-            regex = self.visibilityPattern + '[\s\n]+\$+(\S+)';
-            match = re.search( regex, lineContent )
+            match = self.match(self.variablesRegex, lineContent)
             if match:
                 functionName[self.sanitize(match.group())] = coordinate
 

@@ -9,7 +9,10 @@ class DevHelper(sublime_plugin.TextCommand):
     variablesRegex = visibilityPattern + '[\s\n]+\$+(\S+)'
 
     def run(self, edit):
-        privateObjects = self.getPrivateObjectsNotUsed()
+        privateObjects = self.getNotUsedObjectsFromContent(
+            self.getContentByRegion(sublime.Region(0,self.view.size())), 
+            self.getPrivateObjects()
+        )
         self.draw(privateObjects.items())
 
     def draw(self, objects):
@@ -31,12 +34,10 @@ class DevHelper(sublime_plugin.TextCommand):
     def match(self, regex, content):
         return re.search( regex, content )
 
-
     def findObjectOcorrences(self, coordinates, regex):
         result = {}
         for coordinate in coordinates:
-            lineContent = self.getContentByRegion(coordinate)
-            match = self.match(regex, lineContent)
+            match = self.match(regex, self.getContentByRegion(coordinate))
             if match:
                 result[self.sanitize(match.group())] = coordinate
         return result
@@ -45,39 +46,22 @@ class DevHelper(sublime_plugin.TextCommand):
         return self.findObjectOcorrences(self.getLinesCoordinates(), self.functionRegex)    
 
     def getVariablesNames(self):
-        functionName = {}
-        coordinates =  self.view.lines(sublime.Region(0,self.view.size()))
-
-        for coordinate in coordinates:
-            lineContent =  self.view.substr(coordinate)
-            match = self.match(self.variablesRegex, lineContent)
-            if match:
-                functionName[self.sanitize(match.group())] = coordinate
-
-        return functionName
-
+        return self.findObjectOcorrences(self.getLinesCoordinates(), self.variablesRegex)    
 
     def sanitize(self, string):
         remove = ['(', ' ', ';', '$', self.visibilityPattern, self.functionPattern]
         for item in remove:
             string = string.replace(item, '')
-
         return string
 
     def getPrivateObjects(self):
-        variables = self.getVariablesNames()
-        functions = self.getFunctionNames()
-        return  dict(list(variables.items()) + list(functions.items()))
+        return  dict(list(self.getVariablesNames().items()) + list(self.getFunctionNames().items()))
 
-    def getPrivateObjectsNotUsed( self ):
+    def getNotUsedObjectsFromContent( self, content, objects ):
         frequency = {}
-        text =  self.view.substr(sublime.Region(0,100000))
-        
-        objects = self.getPrivateObjects()
         for key, value in objects.items():
-            match =  re.findall( self.pointerPattern+key, text)
+            match =  re.findall( self.pointerPattern + key, content )
             if len(match) == 0:
                 frequency[key] = value
 
         return frequency    
-

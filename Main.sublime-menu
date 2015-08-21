@@ -1,0 +1,24 @@
+[
+	{
+		"id": "tools2",
+		"children":
+		[
+		    {
+		        "id": "DevHelper",
+		        "caption": "DevHelper",
+		        "children":
+		        [
+		            {
+		                "caption": "Search Not User Functions",
+		                "children":
+		                [
+		                    {
+		                    	"command": "dev_helper"
+		                    }
+		                ]
+		            },
+		        ]
+			}
+		]
+	}
+]

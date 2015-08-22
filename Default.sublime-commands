@@ -1,5 +1,5 @@
 [{
   "id": "objectsNotUsed",
-  "caption": "Refactor: Show Objects Not Used",
-  "command": "dev_helper"
+  "caption": "Refactor: Mark Objects Not Used",
+  "command": "mark_not_used_obejcts"
 }]

@@ -4,16 +4,16 @@
 		"children":
 		[
 		    {
-		        "id": "DevHelper",
-		        "caption": "DevHelper",
+		        "id": "Refactor",
+		        "caption": "Refactor",
 		        "children":
 		        [
 		            {
-		                "caption": "Search Not User Functions",
+		                "caption": "Mark Not User Objects",
 		                "children":
 		                [
 		                    {
-		                    	"command": "dev_helper"
+		                    	"command": "mark_not_used_obejcts"
 		                    }
 		                ]
 		            },

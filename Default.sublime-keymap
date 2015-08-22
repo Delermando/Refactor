@@ -1,3 +1,3 @@
 [
-    { "keys": ["ctrl+shift+x"], "command": "dev_helper" },
+    { "keys": ["ctrl+shift+x"], "command": "mark_not_used_obejcts" },
 ]

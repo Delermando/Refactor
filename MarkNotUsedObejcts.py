@@ -1,7 +1,7 @@
 import sublime, sublime_plugin, pprint
 import re
 
-class DevHelper(sublime_plugin.TextCommand):
+class MarkNotUsedObejcts(sublime_plugin.TextCommand):
     pointer = '->'
     classRegex = '(\s)*class(\s)+(\S+)((\s*)extends|\s)+(\S+)(\s)*{'
     functionRegex = 'private[\s\n]+function[\s\n]+(\S+)[\s\n]*\('

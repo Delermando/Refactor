@@ -15,12 +15,12 @@ mas a qual eu quero expandir para outras linguages e adicionar muito mais funcio
 ## Instalação ##
 ####Instalação automática####
 É necessario previamente ter instalado o **Package Controll**  
-1. Acesse o Package Controll usando o atalho **(ctrl + shift + p)**  e digite **"Install Package"**
+1. Acesse o Package Controll usando o atalho **(ctrl + shift + p)**  e digite **"Install Package"**  
 2. Espere até abrir uma barra de busca e digite **Refactor** e pressione **Enter**
 
 ####Instalação manual####
 É necessário previamente ter instalado o Git e SublimeText  
-1. Clone o seguinte repositório `git clone git@github.com:Delermando/Refactor`
+1. Clone o seguinte repositório `git clone git@github.com:Delermando/Refactor`  
 2. Mova a pasta **Refactor** para a pasta de **Packages** do Sublime
 
 

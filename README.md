@@ -1,11 +1,32 @@
-# Pense, Crie e Refatore #
+Mark Not Used Objects ( ctrl + shift + x )
 
-## Introdução ##
-Esta é uma iniciativa em criar uma ferramenta que auxilie desenvolvedores a melhorar seus códigos, de forma rapida e pratica. Esta é uma primeira versão deste plugin ainda muito basica que tem apenas uma funcionalidade, voltada para o **PHP**,
-mas a qual eu quero expandir para outras linguages e adicionar muito mais funcionalidades.
+Marks the line of a private function or variable not used in the current file / class
+Next functionality (Extract From Selection Function)
+
+Extract the selected code part to a new function
+
+Installation
+
+Automatic Installation
+
+It is necessary to have previously installed the Package Controll
+1. Access Package controll using the shortcut (ctrl + shift + p) and type "Install Package"
+2. Wait until you open a search bar and type Refactor and press Enter
+
+Manual Installation
+It must have previously installed the Git and SublimeText
+1. Clone the following repository git clone git@github.com: Delermando / Refactor
+2. Move the folder Refactor to the Sublime Packages folder
+
+license
+
+# Imagine, Create and Refactor #
+
+## Introduction ##
+This is an initiative to create a tool that helps developers improve their codes of practice and rapid way. This is a first version of this tool initially focused on PHP, but which will be expanded to other programmming languages and more features.  
 
 
-## Funcionalidades##
+## Features ##
 1. Mark Not Used Objects **( ctrl + shift + x )**
     - Marca a linha de uma função ou variavel privada não utilizada no arquivo/classe atual
 

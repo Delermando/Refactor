@@ -27,10 +27,17 @@ class Tools(object):
 
     def match(regex, content):
         return re.search( regex, content )
-        
+
     def draw( objects):
         print('-----------------Object Not Used--------------------------')
         for key, value in objects:    
             print(self.pointer + key)
             self.markLine(value)            
         print('----------------------------------------------------------')
+
+    def getClassName(coordinates):
+        result = {}
+        match = Tools.match(self.classRegex, Tools.getContentByRegion(self.view,sublime.Region(0,self.view.size())))
+        if match:
+            result = Tools.sanitizeClass( match.group())
+        return result

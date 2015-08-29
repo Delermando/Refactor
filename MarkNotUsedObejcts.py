@@ -44,12 +44,6 @@ class MarkNotUsedObejcts(sublime_plugin.TextCommand):
                 result[Tools.sanitizeVariable(match.group())] = coordinate
         return result
 
-    def getClassName(self,coordinates):
-        result = {}
-        match = Tools.match(self.classRegex, Tools.getContentByRegion(self.view,sublime.Region(0,self.view.size())))
-        if match:
-            result = Tools.sanitizeClass( match.group())
-        return result
 
         
     def getFunctionNames(self):

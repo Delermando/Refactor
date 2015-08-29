@@ -1,5 +1,12 @@
-[{
-  "id": "objectsNotUsed",
-  "caption": "Refactor: Mark Objects Not Used",
-  "command": "mark_not_used_obejcts"
-}]
+[
+    {
+      "id": "objectsNotUsed",
+      "caption": "Refactor: [PHP] Mark Objects Not Used",
+      "command": "php_mark_not_used_obejcts"
+    },
+    {
+      "id": "extracCodeToFunction",
+      "caption": "Refactor: [PHP] Extract Code To Function",
+      "command": "php_extract_code_to_function"
+    },
+]

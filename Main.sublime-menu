@@ -9,14 +9,23 @@
 		        "children":
 		        [
 		            {
-		                "caption": "Mark Not User Objects",
+		                "caption": "[PHP] Mark Not User Objects",
 		                "children":
 		                [
 		                    {
-		                    	"command": "mark_not_used_obejcts"
+		                    	"command": "php_mark_not_used_obejcts"
 		                    }
 		                ]
 		            },
+		            {
+		                "caption": "[PHP] Extract Code To Function",
+		                "children":
+		                [
+		                    {
+		                        "command": "php_extract_code_to_function"
+		                    }
+		                ]
+	            	},
 		        ]
 			}
 		]

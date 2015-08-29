@@ -1,7 +1,11 @@
 
 class Tools(object):
     
-    def getNotUsedObjectsFromContent(pointer, content, objects ):
+    def __init__(self,sublime,view):
+        self.view = view   
+        self.sublime = sublime
+
+    def getNotUsedObjectsFromContent(self,pointer, content, objects ):
         frequency = {}
         for key, value in objects.items():
             match =  re.findall( pointer + key, content )
@@ -9,35 +13,80 @@ class Tools(object):
                 frequency[key] = value 
         return frequency   
 
-    def getContentByRegion(view, coordinate):
-        return view.substr(coordinate)
+    def getContentByRegion(self,coordinate):
+        return self.view.substr(coordinate)
 
-    def getAllDocumentCoordinates(sublime, view):
-        return sublime.Region(0,view.size())
+    def getAllDocumentCoordinates(self):
+        return self.sublime.Region(0,self.view.size())
 
-    def sanitizeClass(string):
+    def sanitizeClass(self,string):
         return string.split()[1]
 
-    def sanitizeFunction(string):
+    def sanitizeFunction(self,string):
         return string.split()[2].replace('(','')
 
-    def sanitizeVariable(string):
+    def sanitizeVariable(self,string):
         string =  string.split()[1].replace('$','')
         return string.replace(';','')
 
-    def match(regex, content):
+    def match(self, regex, content):
         return re.search( regex, content )
 
-    def draw( objects):
+    def draw(self, objects,pointer):
         print('-----------------Object Not Used--------------------------')
         for key, value in objects:    
-            print(self.pointer + key)
+            print(pointer + key)
             self.markLine(value)            
         print('----------------------------------------------------------')
 
-    def getClassName(coordinates):
+    def getClassName(self,classRegex,coordinates, content):
         result = {}
-        match = Tools.match(self.classRegex, Tools.getContentByRegion(self.view,sublime.Region(0,self.view.size())))
+        match = self.match(classRegex, content)
         if match:
-            result = Tools.sanitizeClass( match.group())
+            result = self.sanitizeClass( match.group())
         return result
+
+    def getLinesCoordinates(self):
+        return list(self.view.lines(self.sublime.Region(0,self.view.size())))
+
+    def markLine(self,region):
+        self.view.add_regions("mark", [region], "mark", "dot", self.sublime.HIDDEN | self.sublime.PERSISTENT)
+
+
+    def findVariableOcorrences(self, coordinates, regex):
+        result = {}
+        for coordinate in coordinates:
+            match = self.match(regex, self.getContentByRegion(coordinate))
+            if match:
+                result[self.sanitizeVariable(match.group())] = coordinate
+        return result
+
+    def getVariablesNames(self,variablesRegex):
+        return self.findVariableOcorrences(self.getLinesCoordinates(), variablesRegex)   
+
+    def findFunctionsOcorrences(self, coordinates, regex):
+        result = {}
+        for coordinate in coordinates:
+            match = self.match(regex, self.getContentByRegion(coordinate))
+            if match:
+                result[self.sanitizeFunction(match.group())] = coordinate
+        return result
+
+
+    def getFunctionNames(self,classRegex, functionRegex):
+        functions = self.findFunctionsOcorrences(self.getLinesCoordinates(), functionRegex)    
+        className = self.getClassName(
+            classRegex,
+            self.getLinesCoordinates(), 
+            self.getContentByRegion(self.getAllDocumentCoordinates())
+        )
+
+        if len(functions) > 0 and className in functions:
+            del functions[className]
+
+        return functions 
+
+    def getPrivateObjects(self,classRegex,functionRegex,variablesRegex):
+        return  dict(list(self.getVariablesNames(variablesRegex).items()) + list(self.getFunctionNames(classRegex,functionRegex).items()))
+
+    

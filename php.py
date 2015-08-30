@@ -6,8 +6,8 @@ class Php(object):
     functionRegex = 'private[\s\n]+function[\s\n]+(\S+)[\s\n]*\('
     variablesRegex = 'private[\s\n]+\$+(\S+)'
 
-    def markNotUsedObejcts(sublime,view):
-        tools = Tools(sublime,view)
+    def markNotUsedObejcts(sublime,view,edit):
+        tools = Tools(sublime,view,edit)
 
         privateObjects = tools.getNotUsedObjectsFromContent(
             Php.pointer,
@@ -24,5 +24,10 @@ class Php(object):
         )
 
 
-    def extracCodeToFunction(sublime,view):
-        print('extractToFunction')
+    def extracCodeToFunction(sublime,view,edit):
+        tools = Tools(sublime,view,edit)
+        functionContent = tools.getContentByCoordinates(tools.getSelectedRegion())
+        tools.removeContentByCoordinate(sublime.Region(0,10))
+
+    
+

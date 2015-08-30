@@ -1,0 +1,4 @@
+[
+    { "keys": ["ctrl+shift+x"], "command": "php_mark_not_used_obejcts" },
+    { "keys": ["ctrl+shift+b"], "command": "php_extract_code_to_function" },
+]

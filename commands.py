@@ -8,7 +8,5 @@ class PhpMarkNotUsedObejcts(sublime_plugin.TextCommand):
 
 class PhpExtractCodeToFunction(sublime_plugin.TextCommand):
     def run(self, edit):
-       Php.extracCodeToFunction(sublime,self.view, edit)
+        Php.extracCodeToFunction(sublime, edit, self.view)
 
- 
-        

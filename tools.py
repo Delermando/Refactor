@@ -1,8 +1,9 @@
 import re
 class Tools(object):
     
-    def __init__(self,sublime,view):
+    def __init__(self,sublime,view,edit):
         self.view = view   
+        self.edit = edit
         self.sublime = sublime
 
     def getNotUsedObjectsFromContent(self,pointer, content, objects ):
@@ -13,8 +14,21 @@ class Tools(object):
                 frequency[key] = value 
         return frequency   
 
-    def getContentByRegion(self,coordinate):
+    def getContentByCoordinate(self,coordinate):
         return self.view.substr(coordinate)
+
+    def getContentByCoordinates(self, regions):
+        content = ''
+        for region in regions:
+            content += self.getContentByCoordinate(region) + '\n'
+        return content
+
+    def removeContentByCoordinate(self, coordinate):
+        self.view.erase(self.edit, coordinate)
+
+    def removeContentByCoordinates(self, regions):
+        for region in regions:
+            self.removeContentByCoordinate(region) 
 
     def getAllDocumentCoordinates(self):
         return self.sublime.Region(0,self.view.size())
@@ -48,6 +62,9 @@ class Tools(object):
 
     def getLinesCoordinates(self):
         return list(self.view.lines(self.sublime.Region(0,self.view.size())))
+    
+    def getSelectedRegion(self):
+        return self.view.sel()
 
     def markLine(self,region):
         self.view.add_regions("mark", [region], "mark", "dot", self.sublime.HIDDEN | self.sublime.PERSISTENT)
@@ -56,7 +73,7 @@ class Tools(object):
     def findVariableOcorrences(self, coordinates, regex):
         result = {}
         for coordinate in coordinates:
-            match = self.match(regex, self.getContentByRegion(coordinate))
+            match = self.match(regex, self.getContentByCoordinate(coordinate))
             if match:
                 result[self.sanitizeVariable(match.group())] = coordinate
         return result
@@ -67,7 +84,7 @@ class Tools(object):
     def findFunctionsOcorrences(self, coordinates, regex):
         result = {}
         for coordinate in coordinates:
-            match = self.match(regex, self.getContentByRegion(coordinate))
+            match = self.match(regex, self.getContentByCoordinate(coordinate))
             if match:
                 result[self.sanitizeFunction(match.group())] = coordinate
         return result
@@ -78,7 +95,7 @@ class Tools(object):
         className = self.getClassName(
             classRegex,
             self.getLinesCoordinates(), 
-            self.getContentByRegion(self.getAllDocumentCoordinates())
+            self.getContentByCoordinate(self.getAllDocumentCoordinates())
         )
 
         if len(functions) > 0 and className in functions:
@@ -89,4 +106,4 @@ class Tools(object):
     def getPrivateObjects(self,classRegex,functionRegex,variablesRegex):
         return  dict(list(self.getVariablesNames(variablesRegex).items()) + list(self.getFunctionNames(classRegex,functionRegex).items()))
 
-    
+

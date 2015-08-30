@@ -3,12 +3,12 @@ from .php import Php
 
 class PhpMarkNotUsedObejcts(sublime_plugin.TextCommand):
     def run(self, edit):
-       Php.markNotUsedObejcts(sublime,self.view)
+       Php.markNotUsedObejcts(sublime,self.view,edit)
         
 
 class PhpExtractCodeToFunction(sublime_plugin.TextCommand):
     def run(self, edit):
-       Php.extracCodeToFunction(sublime,self.view)
+       Php.extracCodeToFunction(sublime,self.view, edit)
 
  
         

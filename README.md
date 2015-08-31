@@ -8,7 +8,7 @@ This is an initiative to create a tool that helps developers improve their codes
 1. Mark Not Used Objects **( ctrl + shift + x )**
     - Marks the line of a private function or variable not used in the current file / class
 
-2. Extract Function From Selection **( ctrl + shift + b )**
+2. **It is in development!** Extract Function From Selection **( ctrl + shift + b )**
     - Extract the selected code to a new function
 
 2. **Next functionality** (Identify unused variables in a function)

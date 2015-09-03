@@ -15,7 +15,7 @@ This is an initiative to create a tool that helps developers improve their codes
     - Mark unused variables in a functions
 
 ## Suggested Features ##
-Feel free  to suggest new features for this tool through **<delsantos@hotmail.com.br>** email
+Feel free  to suggest new features for this tool through <pre><code><delsantos@hotmail.com.br></code></pre>
 
 ## Installation ##
 ####Automatic Installation####
@@ -25,7 +25,7 @@ It is necessary to have previously installed the Package Controll
 
 ####Manual Installation####
 It must have previously installed the Git and SublimeText  
-1. Clone the following repository <pre><code>git clone <git@github.com>:Delermando/Refactor.git</code></pre>
+1. Clone the following repository <pre><code>git clone git@github.com:Delermando/Refactor.git</code></pre>
 2. Move the folder Refactor to the Sublime Packages folder  
 
 License

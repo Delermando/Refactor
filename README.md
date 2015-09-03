@@ -15,7 +15,7 @@ This is an initiative to create a tool that helps developers improve their codes
     - Mark unused variables in a functions
 
 ## Suggested Features ##
-Feel free  to suggest new features for this tool through <pre><code><delsantos@hotmail.com.br></code></pre>
+Feel free  to suggest new features for this tool through **delsantos@hotmail.com.br** email
 
 ## Installation ##
 ####Automatic Installation####

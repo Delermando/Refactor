@@ -1,0 +1,22 @@
+{
+  "schema_version": "3.0.0",
+  "packages": [
+      {
+          "name": "Refactor",
+          "details": "https://github.com/Delermando/Refactor",
+          "description": "A tool to improve the way you refactor your code",
+          "homepage": "http://sublimecodeintel.github.io/SublimeCodeIntel/",
+          "author": "Delermando Santos",
+          "readme": "https://github.com/Delermando/Refactor/blob/master/README.md",
+          "labels": ["refactor", "code review", "code formatting","php"],
+          "releases": [
+              {
+                  "sublime_text": ">=3000",
+                  "version": "1.0.0",
+                  "url": "",
+                  "date": "2015-08-28 00:00:00"
+              },
+          ]
+      }
+  ]
+}

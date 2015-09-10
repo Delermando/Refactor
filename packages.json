@@ -5,7 +5,7 @@
           "name": "Refactor",
           "details": "https://github.com/Delermando/Refactor",
           "description": "A tool to improve the way you refactor your code",
-          "homepage": "http://sublimecodeintel.github.io/SublimeCodeIntel/",
+          "homepage": "http://refactor-tool.herokuapp.com/",
           "author": "Delermando Santos",
           "readme": "https://github.com/Delermando/Refactor/blob/master/README.md",
           "labels": ["refactor", "code review", "code formatting","php"],
